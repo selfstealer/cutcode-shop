@@ -126,6 +126,14 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'telegram' => [
+            'driver' => 'custom',
+            'via' => App\Logging\Telegram\TelegramLoggerFactory::class,
+            'level' => env('LOG_LEVEL', 'debug'),
+            'chat_id' => -4010207583,
+            'token' => '6236648617:AAFhwtwP7CGtKHKNoY9829EPphXMWQXX0SY',
+        ],
     ],
 
 ];
