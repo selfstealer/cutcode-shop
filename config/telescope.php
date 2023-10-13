@@ -150,9 +150,10 @@ return [
 
         Watchers\JobWatcher::class => env('TELESCOPE_JOB_WATCHER', true),
 
+        // https://laravel.com/docs/10.x/telescope#log-watcher
         Watchers\LogWatcher::class => [
             'enabled' => env('TELESCOPE_LOG_WATCHER', true),
-            'level' => 'error',
+            'level' => 'debug', // Default: error
         ],
 
         Watchers\MailWatcher::class => env('TELESCOPE_MAIL_WATCHER', true),
