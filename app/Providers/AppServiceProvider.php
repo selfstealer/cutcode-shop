@@ -25,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // https://planetscale.com/blog/laravels-safety-mechanisms
         // N+1
         Model::preventLazyLoading(!app()->isProduction());
         // Model::fillable
