@@ -28,7 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // TODO add stub
         if(app()->isLocal()) {
             Schema::dropIfExists('brands');
         }
