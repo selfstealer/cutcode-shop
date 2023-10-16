@@ -27,20 +27,31 @@ class AppServiceProvider extends ServiceProvider
     {
         // https://planetscale.com/blog/laravels-safety-mechanisms
         // N+1
-        Model::preventLazyLoading(!app()->isProduction());
-        // Model::fillable
-        Model::preventSilentlyDiscardingAttributes(!app()->isProduction());
+        // Сахар для 3 методов сразу
+        Model::shouldBeStrict(!app()->isProduction());
+
+        if (!app()->isProduction()) {
+            return;
+        }
 
         // Оповещение если запрос дольше 500ms
-        DB::whenQueryingForLongerThan(500, function (Connection $connection, QueryExecuted $event) {
-            logger()->channel('telegram')->debug('DB::whenQueryingForLongerThan: ' . $connection->query()->toRawSql());
+        // нет это если весь connection дольше 5000mc
+        DB::whenQueryingForLongerThan(CarbonInterval::seconds(5), static function (Connection $connection) {
+            logger()->channel('telegram')->debug('DB::whenQueryingForLongerThan: ' . $connection->totalQueryDuration());
+        });
+
+        // а вот теперь смотрим каждый запрос
+        DB::listen(static function (QueryExecuted $event) {
+            if ($event->time > 500) {
+                logger()->channel('telegram')->debug('DB::listen: ' . $event->sql);
+            }
         });
 
         /** @var Kernel $kernel */
         $kernel = app(Kernel::class);
         $kernel->whenRequestLifecycleIsLongerThan(
             CarbonInterval::seconds(4),
-            function () {
+            static function () {
                 logger()->channel('telegram')->debug('Kernel::whenRequestLifecycleIsLongerThan: ' . request()->url());
             }
         );
