@@ -6,6 +6,7 @@ namespace App\Services\Telegram;
 
 use App\Exceptions\Telegram\TelegramBotException;
 use Illuminate\Support\Facades\Http;
+use Throwable;
 
 final class TelegramBotApi
 {
@@ -17,14 +18,16 @@ final class TelegramBotApi
     public static function sendMessage(string $token, int $chatId, string $text): bool
     {
         try {
-            /** @var bool $ok */
-            $ok = Http::get(self::HOST . $token . '/sendMessage', [
+            return Http::get(self::HOST . $token . '/sendMessage', [
                 'chat_id' => $chatId,
                 'text' =>  $text,
-            ])->json('ok', false);
-        } catch (\Throwable $e) {
+            ])->throw()->json('ok', false);
+        } catch (Throwable $e) {
             throw new TelegramBotException($e->getMessage(), $e->getCode(), $e);
+
+            // сомнительно, что-то решать начинает, какая-то ответственность дополнительная приплетается
+//            report(new TelegramBotException($e->getMessage(), $e->getCode(), $e));
+//            return false;
         }
-        return $ok;
     }
 }
