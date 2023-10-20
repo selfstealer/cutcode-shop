@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('brands', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('slug');
+            $table->string('slug')
+                ->unique();
 
             $table->string('thumbnail')
                 ->nullable();
@@ -28,7 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // TODO add stub
         if(app()->isLocal()) {
             Schema::dropIfExists('brands');
         }

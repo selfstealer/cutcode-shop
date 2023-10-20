@@ -8,24 +8,6 @@
 - php artisan storage:link
 - php artisan migrate
 
-## Log
-- composer update
-- php artisan key:generate
-- php artisan storage:link
-- .env FILESYSTEM_DISK=public
-- \App\Providers\AppServiceProvider::boot() add Helpers
-  - Model::preventLazyLoading
-  - Model::preventSilentlyDiscardingAttributes
-  - DB::whenQueryingForLongerThan
-- composer require barryvdh/laravel-debugbar --dev
-- composer require laravel/telescope --dev && php artisan telescope:install
-- php artisan migrate
-
-просто запустил vite на host и он прописал себя в index.php, который отдаётся контейнером, и это работает)) вроде бы, потом проверю
-
-Ох уж этот github
-https://superuser.com/questions/232373/how-to-tell-git-which-private-key-to-use
-
 ## Synopsis
 #### Init
 - composer update
@@ -63,3 +45,18 @@ https://superuser.com/questions/232373/how-to-tell-git-which-private-key-to-use 
 
 #### Sentry
 Просто ставим Sentry, 14 дней халявы или больше будет, может это полный доступ?
+
+#### Migrate, Factory и Seeds
+Просто три модели с фаршем
+
+#### Stubs
+Докинули стабов через `stub:publish`, убрали комменты, добавили строгости
+
+#### HasSlug
+Создали трейт, магия ларавеля вжух, отрефакторили всё
+
+#### Команда app:refresh
+Добавили новую команду, но без реализации дз пока она не очень нужна
+
+#### Faker::imageFile(dir, dir, path)
+Собственно создаём свою реализацию на основе Faker::file, добавляем её через FakerServiceProvider, что бы грузить картиночки рандомно из tests\Fixtures\images
