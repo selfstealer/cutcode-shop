@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Faker\FakerImageFileProvider;
 use App\Models\Brand;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -21,7 +22,11 @@ class ProductFactory extends Factory
         return [
             'title' => ucfirst($this->faker->words(2, true)),
             'brand_id' => Brand::query()->inRandomOrder()->value('id'),
-            'thumbnail' => '',
+            /** @link \App\Faker\FakerImageFileProvider::imageFile() */
+            'thumbnail' => $this->faker->imageFile(
+                base_path("tests/Fixtures/images/products"),
+                storage_path('app/public/images/products'),
+            ),
             'price' => $this->faker->numberBetween(1000, 100000),
         ];
     }
