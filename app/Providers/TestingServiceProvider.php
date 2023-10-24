@@ -2,12 +2,13 @@
 
 namespace App\Providers;
 
-use App\Faker\FakerImageFileProvider;
+
+use App\Support\Testing\FakerFixturesFileProvider;
 use Faker\Factory;
 use Faker\Generator;
 use Illuminate\Support\ServiceProvider;
 
-class FakerServiceProvider extends ServiceProvider
+class TestingServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -16,7 +17,7 @@ class FakerServiceProvider extends ServiceProvider
     {
         $this->app->singleton(Generator::class, function () {
             $faker = Factory::create();
-            $faker->addProvider(new FakerImageFileProvider($faker));
+            $faker->addProvider(new FakerFixturesFileProvider($faker));
             return $faker;
         });
     }

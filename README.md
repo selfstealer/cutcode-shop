@@ -60,3 +60,9 @@ https://superuser.com/questions/232373/how-to-tell-git-which-private-key-to-use 
 
 #### Faker::imageFile(dir, dir, path)
 Собственно создаём свою реализацию на основе Faker::file, добавляем её через FakerServiceProvider, что бы грузить картиночки рандомно из tests\Fixtures\images
+
+#### Собираем авторизацию
+Несколько базовых страничек и AuthController
+
+#### Добавляем github oauth
+Ставим socialite, генерируем ид и секрет в github, ставим себе публичные данные имя, а то только email придёт, добавляем из документации обработчики 

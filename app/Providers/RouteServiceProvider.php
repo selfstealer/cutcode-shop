@@ -18,7 +18,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
+    public const HOME = '/';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
@@ -35,6 +35,10 @@ class RouteServiceProvider extends ServiceProvider
                 ->response(function (Request $request, array $headers) {
                     return response('Take it easy', Response::HTTP_TOO_MANY_REQUESTS, $headers);
                 });
+        });
+
+        RateLimiter::for('auth', function (Request $request) {
+            return Limit::perMinute(20)->by($request->ip());
         });
 
         $this->routes(function () {
