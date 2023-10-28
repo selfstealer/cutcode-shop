@@ -2,8 +2,10 @@
 
 namespace App\Exceptions;
 
+use DomainException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use function Clue\StreamFilter\fun;
 
 class Handler extends ExceptionHandler
 {
@@ -27,6 +29,13 @@ class Handler extends ExceptionHandler
             if (app()->bound('sentry')) {
                 app('sentry')->captureException($e);
             }
+        });
+
+        $this->reportable(function (DomainException $e) {
+            flash()->alert($e->getMessage());
+
+            // вот это уже перебор делать тут, вообще навигация клиента это лишнее для сервера
+            return back();
         });
     }
 }

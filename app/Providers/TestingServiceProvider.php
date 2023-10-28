@@ -3,10 +3,10 @@
 namespace App\Providers;
 
 
-use App\Support\Testing\FakerFixturesFileProvider;
 use Faker\Factory;
 use Faker\Generator;
 use Illuminate\Support\ServiceProvider;
+use Support\Testing\FakerFixturesFileProvider;
 
 class TestingServiceProvider extends ServiceProvider
 {

@@ -4,6 +4,7 @@
 
 ## Install
 - cp .env.example .env
+- cp .env.example .env.testing
 - php artisan key:generate
 - php artisan storage:link
 - php artisan migrate
@@ -58,11 +59,20 @@ https://superuser.com/questions/232373/how-to-tell-git-which-private-key-to-use 
 #### Команда app:refresh
 Добавили новую команду, но без реализации дз пока она не очень нужна
 
-#### Faker::imageFile(dir, dir, path)
+#### Faker::fixturesFile(relativeDir, relativeDir, path)
 Собственно создаём свою реализацию на основе Faker::file, добавляем её через FakerServiceProvider, что бы грузить картиночки рандомно из tests\Fixtures\images
 
 #### Собираем авторизацию
 Несколько базовых страничек и AuthController
 
 #### Добавляем github oauth
-Ставим socialite, генерируем ид и секрет в github, ставим себе публичные данные имя, а то только email придёт, добавляем из документации обработчики 
+Ставим socialite, генерируем ид и секрет в github, ставим себе публичные данные имя, а то только email придёт, добавляем из документации обработчики
+
+#### Немного тестов
+Докинули .env.testing и установили, совсем не обязательный, worksome/request-factories что бы появились фабрики запросов
+
+#### DDD или просто структура папочек
+Подключили /src в composer.json для загрузки, насоздавали что-то в духе модулей.
+
+#### UnitTest with Coverage
+В контейнере должна быть папка /opt/phpstorm-coverage c правами a+rw, так же нужно настроить PHP - Test Frameworks - Add New Main Remote, с мапингом //wsl/.../project > /var/www/project и относительно контейнера настроенными Path to script и Default configuration file

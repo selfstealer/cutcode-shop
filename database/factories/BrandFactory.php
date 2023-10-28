@@ -19,7 +19,7 @@ class BrandFactory extends Factory
     {
         return [
             'title' => $this->faker->company(),
-            /** @link \App\Support\Testing\FakerFixturesFileProvider::fixturesFile() */
+            /** @see \Support\Testing\FakerFixturesFileProvider::fixturesFile() */
             'thumbnail' => $this->faker->fixturesFile('images/brands', 'images/brands'),
         ];
     }
