@@ -19,6 +19,13 @@ class AppRegistrar implements RouteRegistrar
             Route::get('/telegram', function () {
                 logger()->channel('telegram')->debug('test');
             })->name('telegram');
+
+            Route::get('/storage/images/{dir}/{method}/{size}/{file}', \App\Http\Controllers\ThumbnailController::class)
+                ->where('method', 'resize|crop|fit')
+                ->where('size', '\d+x\d+')
+                ->where('file', '.*\.(png|jpg|jpeg|gif)$')
+                ->name('thumbnail');
+
         });
     }
 }

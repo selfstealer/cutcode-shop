@@ -24,6 +24,8 @@ class ProductFactory extends Factory
             /** @see \Support\Testing\FakerFixturesFileProvider::fixturesFile() */
             'thumbnail' => $this->faker->fixturesFile('images/products', 'images/products'),
             'price' => $this->faker->numberBetween(1000, 100000),
+            'on_home_page' => $this->faker->boolean(),
+            'sorting' => $this->faker->numberBetween(1, 99),
         ];
     }
 }
