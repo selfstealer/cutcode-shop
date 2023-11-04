@@ -3,7 +3,6 @@
 @section('title', __('Восстановление пароля'))
 
 @section('content')
-    @dump($errors)
     <x-forms.auth-forms
         title="{{ __('Восстановление пароля') }}"
         action="{{ route('password.update') }}"

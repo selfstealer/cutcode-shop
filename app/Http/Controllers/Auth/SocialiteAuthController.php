@@ -30,10 +30,10 @@ class SocialiteAuthController extends Controller
 
         /** @var User $user */
         $user = User::query()->updateOrCreate([
-            $diver.'_id' => $driverUser->id,
+            $diver.'_id' => $driverUser->getId(),
         ], [
-            'name' => $driverUser->name ?? $driverUser->email,
-            'email' => $driverUser->email,
+            'email' => ($email = $driverUser->getEmail()),
+            'name' => $driverUser->getName() ?? $email,
 //            'github_token' => $driverUser->token,
 //            'github_refresh_token' => $driverUser->refreshToken,
             'password' => bcrypt(str()->random(20))
