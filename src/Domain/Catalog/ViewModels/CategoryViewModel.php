@@ -15,11 +15,12 @@ class CategoryViewModel
 
     public function homePage(): Collection|array
     {
+//        Cache::forget('category_home_page');
         /** tags(['category']) - можно только для memcached и redis */
-        return Cache::rememberForever('category_home_page', function () {
+//        return Cache::rememberForever('category_home_page', function () {
             return Category::query()
                 ->homePage()
                 ->get();
-        });
+//        });
     }
 }

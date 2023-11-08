@@ -76,3 +76,14 @@ https://superuser.com/questions/232373/how-to-tell-git-which-private-key-to-use 
 
 #### UnitTest with Coverage
 В контейнере должна быть папка /opt/phpstorm-coverage c правами a+rw, так же нужно настроить PHP - Test Frameworks - Add New Main Remote, с мапингом //wsl/.../project > /var/www/project и относительно контейнера настроенными Path to script и Default configuration file
+
+#### DTO and Test
+
+#### Pagination
+`php artisan vendor:publish --tag=laravel-pagination` и неожиданно для себя застрял на кеше вьюхи, нашёл, почистил и всё ок
+
+#### Обертка для поиска
+`composer require laravel/scout` 
+
+#### fulltext MATCH
+Собственно добавили поле, добавили индекс, вызвали whereFullText
