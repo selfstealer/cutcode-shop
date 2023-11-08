@@ -10,7 +10,7 @@
         </h3>
         <div class="mt-auto pt-6">
             <div class="mb-3 text-sm font-semibold">
-                {{ $item->price }} ₽
+                {{ $item->price }}
             </div>
             <div class="flex flex-wrap items-center gap-4">
                 <a href="#" class="w-[56px] !h-[56px] !px-0 btn btn-pink">

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Traits\Models;
+namespace Support\Traits\Models;
 
 use Illuminate\Support\Facades\File;
 

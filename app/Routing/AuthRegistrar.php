@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\Auth\Routing;
+namespace App\Routing;
 
 use App\Contracts\RouteRegistrar;
 use Illuminate\Contracts\Routing\Registrar;
