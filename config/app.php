@@ -172,6 +172,7 @@ return [
         App\Providers\TestingServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
         App\Providers\DomainServiceProvider::class,
+        App\Providers\CatalogServiceProvider::class,
     ])->toArray(),
 
     /*

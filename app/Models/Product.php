@@ -9,8 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Pipeline\Pipeline;
 use Laravel\Scout\Attributes\SearchUsingFullText;
-use Laravel\Scout\Searchable;
+//use Laravel\Scout\Searchable;
 use Support\Casts\PriceCast;
 use Support\Traits\Models\HasSlug;
 use Support\Traits\Models\HasThumbnail;
@@ -20,7 +21,7 @@ class Product extends Model
     use HasFactory;
     use HasSlug;
     use HasThumbnail;
-    use Searchable;
+//    use Searchable;
 
     protected $fillable = [
         'slug',
@@ -53,14 +54,22 @@ class Product extends Model
 
     public function scopeFiltered(Builder $builder): Builder
     {
-        return $builder->when(request('filters.brands'), function (Builder $builder) {
-            $builder->whereIn('brand_id', request('filters.brands'));
-        })->when(request('filters.price'), function (Builder $builder) {
-            $builder->whereBetween('price', [
-                request('filters.price.from', 0) * 100,
-                request('filters.price.to', 100000) * 100,
-            ]);
-        });
+//        foreach (filters() as $filter) {
+//            $builder = $filter->apply($builder);
+//        }
+//        return $builder;
+        return app(Pipeline::class)
+            ->send($builder)
+            ->through(filters())
+            ->thenReturn();
+//        return $builder->when(request('filters.brands'), function (Builder $builder) {
+//            $builder->whereIn('brand_id', request('filters.brands'));
+//        })->when(request('filters.price'), function (Builder $builder) {
+//            $builder->whereBetween('price', [
+//                request('filters.price.from', 0) * 100,
+//                request('filters.price.to', 100000) * 100,
+//            ]);
+//        });
     }
 
     public function scopeSorted(Builder $builder): Builder
