@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Domain\Catalog\Facades\Sorter;
 use Domain\Catalog\Models\Brand;
 use Domain\Catalog\Models\Category;
 use Illuminate\Contracts\Database\Eloquent\Builder;
@@ -16,6 +17,10 @@ use Support\Casts\PriceCast;
 use Support\Traits\Models\HasSlug;
 use Support\Traits\Models\HasThumbnail;
 
+/**
+ *
+ * @property BelongsToMany|Property $properties
+ */
 class Product extends Model
 {
     use HasFactory;
@@ -74,13 +79,14 @@ class Product extends Model
 
     public function scopeSorted(Builder $builder): Builder
     {
-        return $builder->when(request('sort'), function (Builder $builder) {
-            $column = request()->str('sort');
-            if($column->contains(['price', 'title'])) {
-                $direction = $column->contains('-') ? 'DESC' : 'ASC';
-                $builder->orderBy((string)$column->remove('-'), $direction);
-            }
-        });
+        return Sorter::run($builder);
+//        return $builder->when(request('sort'), function (Builder $builder) {
+//            $column = request()->str('sort');
+//            if($column->contains(['price', 'title'])) {
+//                $direction = $column->contains('-') ? 'DESC' : 'ASC';
+//                $builder->orderBy((string)$column->remove('-'), $direction);
+//            }
+//        });
     }
 
     public function scopeHomePage(Builder $builder): Builder
@@ -98,5 +104,16 @@ class Product extends Model
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    public function properties(): BelongsToMany
+    {
+        return $this->belongsToMany(Property::class)
+            ->withPivot('value');
+    }
+
+    public function optionValues(): BelongsToMany
+    {
+        return $this->belongsToMany(OptionValue::class);
     }
 }
