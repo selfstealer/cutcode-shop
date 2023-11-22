@@ -3,16 +3,12 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\Option;
-use App\Models\Product;
-use App\Models\Property;
 use Database\Factories\BrandFactory;
 use Database\Factories\CategoryFactory;
 use Database\Factories\OptionFactory;
 use Database\Factories\OptionValueFactory;
+use Database\Factories\ProductFactory;
 use Database\Factories\PropertyFactory;
-use Domain\Catalog\Models\Brand;
-use Domain\Catalog\Models\Category;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -40,7 +36,8 @@ class DatabaseSeeder extends Seeder
 
         // Ну такой себе рандом число выбирается один раз
         CategoryFactory::new()->count(15)
-            ->has(Product::factory(rand(5, 10))
+            ->has(ProductFactory::new()
+                ->count(10)
                 ->hasAttached($optionValues)
                 ->hasAttached($properties, static function () {
                     return ['value' => ucfirst(fake()->word())];

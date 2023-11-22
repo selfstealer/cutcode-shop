@@ -1,25 +1,26 @@
 <?php
 
-namespace App\Models;
+namespace Domain\Product\Models;
 
-use Domain\Catalog\Facades\Sorter;
+use App\Jobs\ProductJsonProperties;
 use Domain\Catalog\Models\Brand;
 use Domain\Catalog\Models\Category;
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Domain\Product\QueryBuilders\ProductQueryBuilder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Pipeline\Pipeline;
 use Laravel\Scout\Attributes\SearchUsingFullText;
-//use Laravel\Scout\Searchable;
 use Support\Casts\PriceCast;
 use Support\Traits\Models\HasSlug;
 use Support\Traits\Models\HasThumbnail;
 
+//use Laravel\Scout\Searchable;
+
 /**
- *
  * @property BelongsToMany|Property $properties
+ *
+ * @method static Product|ProductQueryBuilder query()
  */
 class Product extends Model
 {
@@ -37,11 +38,28 @@ class Product extends Model
         'on_home_page',
         'sorting',
         'text',
+        'json_properties',
     ];
 
     protected $casts = [
         'price' => PriceCast::class,
+        'json_properties' => 'array',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function (Product $product) {
+            ProductJsonProperties::dispatch($product)
+                ->delay(now()->addSeconds(10));
+        });
+
+        static::updated(function (Product $product) {
+            ProductJsonProperties::dispatch($product)
+                ->delay(now()->addSeconds(10));
+        });
+    }
 
     protected function thumbnailDir(): string
     {
@@ -57,43 +75,9 @@ class Product extends Model
         ];
     }
 
-    public function scopeFiltered(Builder $builder): Builder
+    public function newEloquentBuilder($query): ProductQueryBuilder
     {
-//        foreach (filters() as $filter) {
-//            $builder = $filter->apply($builder);
-//        }
-//        return $builder;
-        return app(Pipeline::class)
-            ->send($builder)
-            ->through(filters())
-            ->thenReturn();
-//        return $builder->when(request('filters.brands'), function (Builder $builder) {
-//            $builder->whereIn('brand_id', request('filters.brands'));
-//        })->when(request('filters.price'), function (Builder $builder) {
-//            $builder->whereBetween('price', [
-//                request('filters.price.from', 0) * 100,
-//                request('filters.price.to', 100000) * 100,
-//            ]);
-//        });
-    }
-
-    public function scopeSorted(Builder $builder): Builder
-    {
-        return Sorter::run($builder);
-//        return $builder->when(request('sort'), function (Builder $builder) {
-//            $column = request()->str('sort');
-//            if($column->contains(['price', 'title'])) {
-//                $direction = $column->contains('-') ? 'DESC' : 'ASC';
-//                $builder->orderBy((string)$column->remove('-'), $direction);
-//            }
-//        });
-    }
-
-    public function scopeHomePage(Builder $builder): Builder
-    {
-        return $builder->where('on_home_page', true)
-            ->orderBy('sorting')
-            ->limit(6);
+        return new ProductQueryBuilder($query);
     }
 
     public function brand(): BelongsTo

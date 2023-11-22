@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use Domain\Product\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 
 class ProductController extends Controller
@@ -18,15 +18,11 @@ class ProductController extends Controller
             })
             ->get();
 
-        $options = $product->optionValues->mapToGroups(function ($item) {
-            return [$item->option->title => $item];
-        });
-
         session()->put('also.' . $product->id, $product->id);
 
         return view('product.show', [
             'product' => $product,
-            'options' => $options,
+            'options' => $product->optionValues->keyValues(),
             'also' => $also
         ]);
     }
