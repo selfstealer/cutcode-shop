@@ -14,11 +14,13 @@ use Laravel\Scout\Attributes\SearchUsingFullText;
 use Support\Casts\PriceCast;
 use Support\Traits\Models\HasSlug;
 use Support\Traits\Models\HasThumbnail;
+use Support\ValueObjects\Price;
 
 //use Laravel\Scout\Searchable;
 
 /**
  * @property BelongsToMany|Property $properties
+ * @property Price $price
  *
  * @method static Product|ProductQueryBuilder query()
  */
