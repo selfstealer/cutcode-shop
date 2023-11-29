@@ -23,6 +23,7 @@ class RouteServiceProvider extends ServiceProvider
     public const HOME = '/';
 
     protected array $registrars = [
+        \App\Routing\OrderRegistrar::class,
         \App\Routing\CartRegistrar::class,
         \App\Routing\AppRegistrar::class,
         \App\Routing\AuthRegistrar::class,

@@ -31,11 +31,14 @@ class Handler extends ExceptionHandler
             }
         });
 
-        $this->reportable(function (DomainException $e) {
+        $this->renderable(function (DomainException $e) {
             flash()->alert($e->getMessage());
 
             // вот это уже перебор делать тут, вообще навигация клиента это лишнее для сервера
-            return back();
+            // доработка, но всё равно фигня какая-то
+            return session()->previousUrl()
+                ? back()
+                : redirect()->route('home');
         });
     }
 }

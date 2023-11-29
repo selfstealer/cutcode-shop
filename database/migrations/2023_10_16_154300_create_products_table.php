@@ -32,6 +32,9 @@ return new class extends Migration
             $table->string('thumbnail')
                 ->nullable();
 
+            $table->unsignedInteger('quantity')
+                ->default(0);
+
             $table->timestamps();
         });
 
